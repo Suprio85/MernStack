@@ -1,4 +1,6 @@
 import React from 'react'
+import { FaUser } from 'react-icons/fa'
+import { useState, useRef } from 'react'
 
 
 
