@@ -2,10 +2,24 @@ import express from 'express';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
+import colors from 'colors';
 import cors from 'cors';
 import path from 'path';
+// routers
 import goalRoutes from './routers/goalRoutes.js';
+import userRoutes from './routers/userRoutes.js';
+
+// middleware
 import { errHandeler } from './middleware/errorHandeler.js';
+import { connectDB } from './config/db.js';
+
+
+
+try {
+  connectDB();
+}catch(error){
+  console.error(`Error: ${error.message}`);
+}
 
 
 
@@ -21,18 +35,20 @@ app.use(cors());
 
 
 
+
 //routers
 app.use('/api/goals', goalRoutes);
+app.use('/api/users', userRoutes);
 
 
 
-// middleware
-app.use(errHandeler);
 
 app.get('/api/hi',(req,res,next)=>{
-    res.json({message:'Hello World'})
+  res.json({message:'Hello World'})
 })
 
+// error handeler middleware
+app.use(errHandeler);
 
 const port = process.env.PORT || 3000;
 
