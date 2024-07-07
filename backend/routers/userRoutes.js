@@ -14,7 +14,7 @@ router.post('/login',loginUser);
 
 router.get('/me',protect,getuserData);
 
-router.post('/logout',protect,logoutUser);
+ router.post('/logout',logoutUser);
 
 
 

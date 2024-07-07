@@ -1,18 +1,24 @@
 import React from 'react'
 import { FaUser } from 'react-icons/fa'
-import { useState, useRef } from 'react'
+import { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { login, reset } from '../features/auth/authSlice'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 
 
 const Login = () => {
 
-    const [form, setForm] = React.useState({
+    const [form, setForm] = useState({
     email: "",
     password: ""});
-
     const [error, setError] = React.useState(false);
-
     const {  email, password } = form;
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const {isLoading,isError,isSuccess,errorMessage} = useSelector(state=>state.auth);
+
 
     const handleChange = (e) => {
         setForm((prevForm)=>({
@@ -24,8 +30,25 @@ const Login = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(form);
-     
+        if(email === "" || password === ""){
+            setError(true);
+            return;
+        }
+    const data = {email,password};
+    dispatch(login(data));
     }
+
+    useEffect(()=>{
+        if(isError){
+            toast.error(errorMessage);
+            dispatch(reset());
+        }
+
+        if(isSuccess){
+            toast.success('User Logged In Successfully');
+            navigate('/');
+        }
+    },[isError,isSuccess])
 
 
 
@@ -33,9 +56,9 @@ const Login = () => {
     <>
     <section>
       <h1>
-        <FaUser> </FaUser> Register
+        <FaUser> </FaUser> Login
       </h1>
-      <p> Please submit the form</p>
+      <p> Enter Your Email and Password</p>
     </section>
 
     <section>

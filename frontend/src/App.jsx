@@ -5,6 +5,8 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import MainLayout from './layout/MainLayout'
 import { createBrowserRouter,RouterProvider, createRoutesFromElements, Route } from 'react-router-dom'
+import {ToastContainer} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 
 function App() {
@@ -26,6 +28,7 @@ function App() {
       <RouterProvider router={Router}>
       
       </RouterProvider>
+      <ToastContainer />
     </>
   )
 }

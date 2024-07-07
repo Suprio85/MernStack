@@ -71,15 +71,16 @@ export const getuserData = asyncHandler(async(req,res)=>{
 
 
 export const logoutUser = asyncHandler(async(req,res)=>{
+    
     res.cookie('token',null,{
         expires: new Date(Date.now()),
         httpOnly: true
     })
 
     res.json({
-        id : req.user.id,
-        name: req.user.name,
-        message: 'Logged out'})
+        name : req.body.name,
+        message: `${req.body.name} Logged out successfully`
+    })
 })
 
 

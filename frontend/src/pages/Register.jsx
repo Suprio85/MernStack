@@ -1,5 +1,11 @@
 import React from "react";
+import {useState,useEffect} from 'react';
+import {useNavigate} from 'react-router-dom';
+import { useSelector, useDispatch } from "react-redux";
 import { FaUser } from "react-icons/fa";
+import {registerUser,reset} from '../features/auth/authSlice'
+import {toast} from 'react-toastify';
+import { User } from "../../../backend/models/userModel";
 
 const Register = () => {
    const [form, setForm] = React.useState({
@@ -9,8 +15,24 @@ const Register = () => {
     confirmPassword: "",});
 
     const [error, setError] = React.useState(false);
-
     const { name, email, password,confirmPassword } = form;
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const {isLoading,isError,isSuccess,errorMessage} = useSelector(state=>state.auth);
+
+
+    useEffect(()=>{
+        if(isError){
+            toast.error(errorMessage);
+            dispatch(reset());
+        }
+
+        if(isSuccess && User){
+            navigate('/login');
+            toast.success('User Registered Successfully. Please Login');
+            dispatch(reset());
+        }
+    },[isSuccess,isError,errorMessage])
 
     const handleChange = (e) => {
         setForm((prevForm)=>({
@@ -26,7 +48,8 @@ const Register = () => {
             setError(true);
             return;
         }
-        
+    const data = {name,email,password}; 
+    dispatch(registerUser(data));   
     }
 
 
